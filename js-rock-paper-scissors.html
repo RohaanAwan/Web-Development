@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+           Objects
+        </title>
+        <style>
+            body {
+                background-color: rgb(25, 25, 25);
+                color: white;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .button-with-pics {
+                height: 50px;
+                background-color: transparent;
+            }
+            .button-choices {
+                background-color: rgb(25, 25, 25);
+                border: 3px solid white;
+                border-radius: 60px;
+                height: 120px;
+                width: 120px;
+                margin-right: 10px;
+                cursor: pointer;
+            }
+            .button-choices:hover {
+                background-color:rgb(40, 40, 40);
+            }
+            .button-choices:active {
+                background-color: rgb(60, 60, 60);
+            }
+            .js-score {
+                margin-top: 60px;
+            }
+            .reset-button {
+                background-color:rgb(58, 57, 57);
+                color:white;
+                border: none; 
+                padding: 8px 15px;
+                font-weight: 200;
+                font-size: 15px;
+            }
+            .reset-button:hover {
+                background-color: rgb(51, 46, 46);
+            }
+            .reset-button:active {
+                background-color: rgb(44, 36, 36);
+            }
+        </style>
+    </head>
+
+    <body>
+        <p style = "font-size: 30px; font-weight: bold;">Rock Paper Scissors</p>
+        <button class = "button-choices" onclick = "playGame('rock')">
+            <img class = "button-with-pics" src = "rock-emoji.png" "https://supersimple.dev/projects/rock-paper-scissors/images/rock-emoji.png">
+        </button>
+        <button class = "button-choices" onclick = "playGame('paper')">
+            <img class = "button-with-pics" src = "paper-emoji.png" "https://supersimple.dev/projects/rock-paper-scissors/images/paper-emoji.png">
+        </button>
+        <button class = "button-choices" onclick = "playGame('scissors')">
+            <img class = "button-with-pics" src = "scissors-emoji.png" "https://supersimple.dev/projects/rock-paper-scissors/images/scissors-emoji.png">
+        </button>
+        <p class = 'js-score'>Wins: 0, Losses: 0, Ties: 0 </p>
+        <button class = "reset-button" onclick = "
+            score.wins = 0;
+            score.losses = 0;
+            score.ties = 0;
+            localStorage.removeItem('score');
+            document.querySelector('.js-score').innerHTML = 'Wins: 0, Losses: 0, Ties: 0 ';
+            document.querySelector('.js-message').innerHTML = 'Prompt: All Scores Reset';
+        ">Reset Score</button>
+        <p class = 'js-message'>
+            Prompt:
+        </p>
+
+        <script>
+            score = JSON.parse(localStorage.getItem('score')) || {
+                wins: 0,
+                losses: 0,
+                ties: 0
+            }; 
+
+            function playGame(playerMove)
+            {
+                const computerMove = pickComputerMove();
+                let result = '';
+
+                if(playerMove == 'scissors')
+                {
+                    if(computerMove == 'rock')
+                    {
+                        result = 'You lose';
+                    }
+                    else if (computerMove == 'paper')
+                    {
+                        result = 'You win';
+                    }
+                    else if (computerMove == 'scissors')
+                    {
+                        result = 'Tie';
+                    }
+                }
+                else if (playerMove == 'rock')
+                {
+                    if(computerMove == 'paper')
+                    {
+                        result = 'You lose';
+                    }
+                    else if (computerMove == 'scissors')
+                    {
+                        result = 'You win';
+                    }
+                    else if (computerMove == 'rock')
+                    {
+                        result = 'Tie';
+                    }
+                }
+                else if (playerMove == 'paper')
+                {
+                    if(computerMove == 'scissors')
+                    {
+                        result = 'You lose';
+                    }
+                    else if (computerMove == 'rock')
+                    {
+                        result = 'You win';
+                    }
+                    else if (computerMove == 'paper')
+                    {
+                        result = 'Tie';
+                    }
+                }
+
+                if(result == 'You win')
+                {
+                    score.wins++;
+                }
+                else if (result == 'You lose')
+                {
+                    score.losses++;
+                }
+                else if (result == 'Tie')
+                {
+                    score.ties++;
+                }
+
+                localStorage.setItem('score', JSON.stringify(score));
+
+                document.querySelector('.js-message').innerHTML = 'Prompt: ' + `You picked ${playerMove}. Computer picked ${computerMove}
+Result: ${result}`;
+
+                document.querySelector('.js-score').innerHTML = `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
+
+
+            }
+
+            function pickComputerMove()
+            {
+                const randomNumber = Math.random();
+                let computerMove = '';
+
+                if(randomNumber >= 0 && randomNumber < 1 / 3)
+                {
+                    computerMove = 'rock';
+                }
+                else if (randomNumber >= 1 / 3 && randomNumber < 2 / 3)
+                {
+                    computerMove = 'paper';
+                }
+                else
+                {
+                    computerMove = 'scissors';
+                }
+
+                return computerMove;
+            }
+
+        </script>
+    </body>
+</html>
